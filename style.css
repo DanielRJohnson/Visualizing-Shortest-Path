@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    
+}
+html,body { height:100%; }
+header{
+    color: #afafbf;
+    background-color: #171c28;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 10%;
+    height: 5vh;
+}
+body{
+    font-family: 'Montserrat', sans-serif;
+    overflow: hidden; /* Hide scrollbar */
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: #afafbf;
+}
+h1{
+    background-color: #afafbf;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6em 10%;
+    height: 1vh;
+}
+button {
+    cursor: pointer;
+    display:inline;
+    margin:0;
+    font-family: 'Montserrat', sans-serif;
+    color: #171c28;
+    background-color: #afafbf;
+    padding:0.35em 1.2em;
+    border:0.1em solid #171c28;
+    box-sizing: border-box;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+button:hover{
+    color:#afafbf;
+    background-color:#171c28;
+    border:0.1em solid #afafbf;
+}
+.tutorial{
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.5);
+    overflow: auto;
+}
+.tutorialContent{
+    background-color: #afafbf;
+    margin: 15% auto;
+    border: 3px solid black;
+    width: 50%;
+    height: 50%;
+    text-align: center;
+    font-size: 24px;
+}
+.close{
+    padding-right: 0.3em;
+    color: gray;
+    float: right;
+    font-size: 50px;
+    font-weight: bold;
+}
+.close:hover, .close:focus{
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+}
+.canvasContainer{
+    position: relative;
+    margin: 1em .5em;
+    margin-top: 0em;
+    height: 88vh;
+}
+.animationSlider, .title{
+    color: #afafbf;
+    background-color: #171c28;
+    user-select: none;
+    display: inline-block;
+}
+.switch { 
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position : relative;
+    display : inline-block;
+    width : 40px;
+    height : 20px;
+    background-color: #afafbf;
+    border-radius: 20px;
+}
+.switch::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: white;
+    top: 1px;
+    left: 1px;
+    transition: all 0.3s;
+}
+.checkbox:checked + .switch::after {
+    left : 20px; 
+}
+.checkbox:checked + .switch {
+    background-color: #7CC5FF;
+}
+.checkbox { 
+    display : none;
+}
+#snackbar{
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 3px;
+    padding: 16px;
+    position: fixed;
+    z-index: 2;
+    left: 50%;
+    bottom: 30px;
+}
+#snackbar.show{
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 5s;
+    animation: fadein 0.5s, fadeout 0.5s 5s;
+}
+@-webkit-keyframes fadein{
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1}
+}
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}

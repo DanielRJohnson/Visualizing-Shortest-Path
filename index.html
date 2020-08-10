@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="p5.js"></script>
+    <script src="index.js"></script>
+    <title>Pathfinding Project</title>
+</head>
+
+<body>
+    <div id="tutorial" class="tutorial">
+        <div class="tutorialContent">
+            <span class="close">&times;</span>
+            <br><h3>SAMPLE TEXT</h3><br>
+        </div>
+    </div>
+
+    <header>
+        <div class="title">
+            Visualizing Shortest Path
+        </div>
+        
+        <div class="animationSlider">
+            Animations (Longer computation times): <input type="checkbox" id="toggle" class="checkbox" checked/>
+            <label for="toggle" class="switch"></label>
+        </div>
+        <button href="https://github.com/DanielRJohnson">My Github</button>
+    </header>
+    <h1>
+            <button type="button" class="PlaceStart" id="PlaceStart" onclick="buttonPressed(this)">Place Start</button>
+            <button type="button" class="PlaceEnd" id="PlaceEnd" onclick="buttonPressed(this)">Place End</button>
+            <button type="button" class="IncreaseRows" id="IncreaseRows" onclick="buttonPressed(this)">Increase rows</button>
+            <button type="button" class="ReduceRows" id="ReduceRows" onclick="buttonPressed(this)">Reduce rows</button>
+            <button type="button" class="Reset" id="Reset" onclick="buttonPressed(this)">Reset</button>
+            <button type="button" class="RunAlgorithm" id="RunAlgorithm" onclick="buttonPressed(this)">Run Algorithm</button>
+    </h1>
+    
+    <div class="canvasContainer" id="canvasContainer"></div>
+    <div id="snackbar">You weren't supposed to see this...</div>
+</body>
+</html>
