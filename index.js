@@ -1,11 +1,11 @@
 //MORE IMPORTANT
-//Add A*
 //maze generator
+//Add A*
 //make look good on mobile
-//place start and end bug when clicking off of canvas
 
 //LESS IMPORTANT
 //add effect when path reaches start
+//add documentation?
 //eventually clean up code
 
 new p5();
