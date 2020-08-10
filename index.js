@@ -4,7 +4,7 @@
 //make look good on mobile
 
 //LESS IMPORTANT
-//add effect when path reaches start
+//add effect when path reaches start?
 //add documentation
 //eventually clean up code
 
