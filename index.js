@@ -1,13 +1,12 @@
 //MORE IMPORTANT
-//add effect when path reaches start
+//Add A*
+//maze generator
+//make look good on mobile
 
 //LESS IMPORTANT
-//maze generator?
-//eventually add A*?
-//make look good on mobile and work with touch
-
-//EVEN LESS IMPORTANT
+//add effect when path reaches start
 //eventually clean up code
+
 new p5();
 let startTime = performance.now();
 document.addEventListener('DOMContentLoaded', (event) => {
