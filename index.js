@@ -5,7 +5,7 @@
 
 //LESS IMPORTANT
 //add effect when path reaches start
-//add documentation?
+//add documentation
 //eventually clean up code
 
 new p5();
