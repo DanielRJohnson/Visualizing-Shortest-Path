@@ -2,6 +2,7 @@
 //Add A*
 //maze generator
 //make look good on mobile
+//place start and end bug when clicking off of canvas
 
 //LESS IMPORTANT
 //add effect when path reaches start
@@ -155,17 +156,20 @@ function windowResized() {
     resetCanvas(currentGrid.numRows);
 }
 function mousePressed(){
-    if (currentGrid.startSelected == true){
-        fillInSpace(false, true, false);
-        currentGrid.startSelected = false;
+    if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height){
+        if (currentGrid.startSelected == true){
+            fillInSpace(false, true, false);
+            currentGrid.startSelected = false;
+        }
+        else if (currentGrid.endSelected == true){
+            fillInSpace(false, false, true);
+            currentGrid.endSelected = false;
+            }
+        else if (currentGrid.ran == false && document.getElementById('tutorial').style.display == "none"){
+            fillInSpace(false, false, false);
+        }
     }
-    else if (currentGrid.endSelected == true){
-        fillInSpace(false, false, true);
-        currentGrid.endSelected = false;
-    }
-    else if (currentGrid.ran == false && document.getElementById('tutorial').style.display == "none"){
-        fillInSpace(false, false, false);
-    }
+    
 }
 function mouseDragged(){
     if (currentGrid.ran == false && document.getElementById('tutorial').style.display == "none"){
