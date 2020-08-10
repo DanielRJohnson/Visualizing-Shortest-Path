@@ -1,0 +1,4 @@
+*.md linguist-detectable=false
+*.png linguist-detectable=false
+special-vendored-path/* linguist-vendored
+p5.js linguist-vendored=false
