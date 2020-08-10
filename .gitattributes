@@ -1,2 +1,8 @@
-* linguist-vendored
-*.js linguist-vendored=false
+*.gitattributes text
+.gitignore      text
+*.md            text
+
+.gitattributes  export-ignore
+.gitignore      export-ignore
+
+*.gitattributes linguist-language=gitattributes
