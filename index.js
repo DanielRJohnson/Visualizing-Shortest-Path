@@ -81,52 +81,47 @@ class node {
         this.prev = this;
     }
 }
-//credit to https://medium.com/@mayashavin/ds-queue-implementation-in-js-21ea5914c428
-function Queue(){
-	var storage = {},
-		head = 0,
-		tail= 0;
-    
-	return {
-		enQueue: function(item){
-		storage[tail] = item;
-		tail++;
-		},
-		deQueue: function(){
-			var size = tail - head;
-
-			if (size <= 0) return undefined;
-
-			var item = storage[head];
-			
-			delete storage[head];
-
-			head++;
-
-			//Reset the counter
-			if (head === tail){
-				head = 0;
-				tail = 0;
-			}
-			
-			return item;
-		},
-		size: function(){
-			return tail - head;
-		},
-		peek: function(){
-			return storage[tail - 1];
-		},
-		print: function(){
-			var result = [];
-
-			for (var key in storage){
-				result.push(storage[key]);
-			}
-
-			return result;
-		}
-	}
+/*
+* I am aware that with JS arrays you can mimic a queue, but the "Shift"
+* function that it uses is O(n) whereas my dequeue is O(1)
+*/
+class Queue{
+    constructor(){
+        this.elements = {};
+        this.head = 0;
+        this.tail= 0;
+    }
+    enqueue(item){
+        this.elements[this.tail] = item;
+        this.tail++;
+    }
+    dequeue(){
+        var length = this.tail - this.head;
+        if (length <= 0){
+            return undefined;
+        }
+        var deletedItem = this.elements[this.head];
+        delete this.elements[this.head];
+        this.head++;
+        if (this.head == this.tail){
+            this.head = 0;
+            this.tail = 0;
+        }
+        return deletedItem;
+    }
+    size(){
+        return this.tail - this.head;
+    }
+    peak(){
+        return this.elements[this.tail - 1];
+    }
+    print(){
+        var publicArr = [];
+        for (var i in this.elements){
+            publicArr.push(this.elements[i]);
+        }
+        return publicArr;
+    }
 }
 var currentGrid = new gridWrapper(25);
 //P5 Setup
@@ -305,11 +300,11 @@ function BFS(gridW){
     }
 
     let q = new Queue();
-    q.enQueue(source);
+    q.enqueue(source);
     gridW.grid[source.x][source.y] = "Visited";
     let visitTimer = 0;
     while (q.size() > 0){
-        let p = q.deQueue();
+        let p = q.dequeue();
         
         if (gridW.getEntry(p.x, p.y) == "End"){
             gridW.grid[source.x][source.y] = "Start";
@@ -328,7 +323,7 @@ function BFS(gridW){
             if (gridW.getEntry(p.x - 1, p.y) == "Open" || gridW.getEntry(p.x - 1, p.y) == "End"){
                 let n = new node(p.x - 1, p.y, p.dist + 1);
                 n.prev = p;
-                q.enQueue(n);
+                q.enqueue(n);
                 if (gridW.getEntry(p.x - 1, p.y) != "End"){
                     gridW.markSpotAsVisited(p.x - 1, p.y, (visitTimer*100)/currentGrid.numRows);
                 }
@@ -338,7 +333,7 @@ function BFS(gridW){
             if (gridW.getEntry(p.x + 1, p.y) == "Open" || gridW.getEntry(p.x + 1, p.y) == "End"){
                 let n = new node(p.x + 1, p.y, p.dist + 1);
                 n.prev = p;
-                q.enQueue(n);
+                q.enqueue(n);
                 if (gridW.getEntry(p.x + 1, p.y) != "End"){
                     gridW.markSpotAsVisited(p.x + 1, p.y, (visitTimer*100)/currentGrid.numRows);
                 }
@@ -348,7 +343,7 @@ function BFS(gridW){
             if (gridW.getEntry(p.x, p.y - 1) == "Open" || gridW.getEntry(p.x, p.y - 1) == "End"){
                 let n = new node(p.x, p.y - 1, p.dist+1);
                 n.prev = p;
-                q.enQueue(n);
+                q.enqueue(n);
                 if (gridW.getEntry(p.x, p.y - 1) != "End"){
                     gridW.markSpotAsVisited(p.x, p.y - 1, (visitTimer*100)/currentGrid.numRows);
                 }
@@ -358,7 +353,7 @@ function BFS(gridW){
             if (gridW.getEntry(p.x, p.y + 1) == "Open" || gridW.getEntry(p.x, p.y + 1) == "End"){
                 let n = new node(p.x, p.y + 1, p.dist + 1);
                 n.prev = p;
-                q.enQueue(n);
+                q.enqueue(n);
                 if (gridW.getEntry(p.x, p.y + 1) != "End"){
                     gridW.markSpotAsVisited(p.x, p.y + 1, (visitTimer*100)/currentGrid.numRows);
                 }
