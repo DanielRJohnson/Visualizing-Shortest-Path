@@ -1,12 +1,17 @@
-//MORE IMPORTANT
-//maze generator
-//Add A*
-//make look good on mobile
+/*
+* @Author: Daniel Johnson
+* @File: index.js
+* @Date: 8-11-2020
+* @breif: This file implements pathfinding algorithms and visualizes
+*         them with help from the p5.js library
+*/
 
-//LESS IMPORTANT
-//add effect when path reaches start?
-//add documentation
-//eventually clean up code
+/*   TODO
+* Maze Generator
+* A*
+* Mobile-ize layout
+* Clean up some things
+*/
 
 new p5();
 let startTime = performance.now();
@@ -83,7 +88,7 @@ class node {
 }
 /*
 * I am aware that with JS arrays you can mimic a queue, but the "Shift"
-* function that it uses is O(n) whereas my dequeue is O(1)
+* function that it uses is O(n) whereas my dequeue is O(1).
 */
 class Queue{
     constructor(){
@@ -123,8 +128,13 @@ class Queue{
         return publicArr;
     }
 }
+/*
+* Global variable is ugly, I know. As of right now, I haven't thought up
+* a workaround because the P5 functions need access to the grid.
+*/
 var currentGrid = new gridWrapper(25);
-//P5 Setup
+
+//P5 Functions
 function setup() {
     let cnv = createCanvas(document.getElementById('canvasContainer').offsetWidth, document.getElementById('canvasContainer').offsetHeight);
     cnv.parent("canvasContainer");
@@ -144,7 +154,6 @@ function setup() {
         }
     }
 }
-//P5 Functions
 function draw() {
 }
 function windowResized() {
@@ -177,7 +186,6 @@ function touchStarted(){
 function touchMoved(){
     mouseDragged();
 }
-
 function keyPressed(){
     /*
     if (keyCode === 83){ // S
