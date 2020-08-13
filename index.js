@@ -8,6 +8,7 @@
 
 /*   TODO
 * A*
+* Make tutorial better
 * Clean up code
 * Mobile-friendly layout
 */
