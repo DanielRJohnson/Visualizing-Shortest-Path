@@ -369,13 +369,22 @@ function drawPath(path, gridW){
         pathTimer++;
     }
 }
-function recreatePath(p, gridW){
+function recreatePath(p, gridW, visitTimer){
     let path = [];
     while (p.prev != p){
         path.unshift(p);
         p = p.prev;
     }
-    drawPath(path, gridW);
+    if (document.getElementById("toggle").checked == false){
+        drawPath(path, gridW);
+    }
+    else if (document.getElementById("ChangeAlgorithm").innerHTML == "Change Algorithm: A*"){
+        setTimeout(drawPath, (visitTimer*500)/currentGrid.numRows, path, gridW);
+    }
+    else {
+        setTimeout(drawPath, (visitTimer*100)/currentGrid.numRows, path, gridW);
+    }
+    
 }
 function BFS(gridW){
     let source = new node(0,0,0);
@@ -404,12 +413,7 @@ function BFS(gridW){
         if (gridW.getEntry(p.x, p.y) == "End"){
             gridW.grid[source.x][source.y] = "Start";
             let dist = p.dist;
-            if (document.getElementById("toggle").checked == true){
-                setTimeout(recreatePath, (visitTimer*100)/currentGrid.numRows, p, gridW);
-            }
-            else {
-                recreatePath(p, gridW);
-            }
+            recreatePath(p, gridW, visitTimer);
             return dist;
         }
 
@@ -463,7 +467,7 @@ function heuristic(a, b){
     //return dist(a.x, a.y, b.x, b.y);
 }
 function AStar(gridW){
-    //automate this shit
+    //automate this
     let start = new node(0,0,0);
     let end = new node(0,0,0);
     for (let i = 0; i < gridW.numRows; i++){
@@ -497,7 +501,7 @@ function AStar(gridW){
         let current = openSet[lowestIndex];
 
         if (gridW.getEntry(current.x, current.y) == "End"){ //Are we done?
-            setTimeout(recreatePath, (visitTimer*500)/currentGrid.numRows, current, gridW);
+            recreatePath(current, gridW, visitTimer);
             return current.g;
         }
         //can be just remove if in priority queue
