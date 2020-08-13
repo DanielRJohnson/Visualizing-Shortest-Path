@@ -7,10 +7,9 @@
 */
 
 /*   TODO
-* Maze Generator
 * A*
-* Mobile-ize layout
-* Clean up some things
+* Clean up code
+* Mobile-friendly layout
 */
 
 new p5();
