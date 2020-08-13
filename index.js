@@ -23,20 +23,22 @@ class gridWrapper{
     constructor(rows) {
         this.numRows = rows;
         this.numCols = Math.ceil(this.numRows*(width/height));;
-        this.grid = [];
         this.startMade = false;
         this.endMade = false;
         this.startSelected = false;
         this.endSelected = false;
         this.ran = false;
+
+        this.grid = [];
+        this.visitedGrid = [];
         for (let i = 0; i < this.numRows; i++){
             this.grid[i] = [];
+            this.visitedGrid[i] = [];
         }
-        //console.log(this.grid);
-        
         for (var i = 0; i < this.numRows; i++){
             for (var j = 0; j < this.numCols; j++){
                 this.grid[i][j] = ("Open");
+                this.visitedGrid[i][j] = false;
             }
         }
         
@@ -47,7 +49,7 @@ class gridWrapper{
         square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
     }
     markSpotAsVisited(row,col, delay){
-        this.grid[row][col] = "Visited";
+        this.visitedGrid[row][col] = true;
         if (document.getElementById("toggle").checked == true){
             setTimeout(fill, delay, '#7CC5FF');
             setTimeout(square, delay, col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
@@ -69,21 +71,32 @@ class gridWrapper{
         square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
         this.endMade = true;
     }
-    unmarkSpot(row,col){
+    unmarkSpot(row,col, delay){
         this.grid[row][col] = "Open";
-        fill('#171c28');
-        square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
+        if (document.getElementById("toggle").checked == true){
+            setTimeout(fill, delay, '#171c28');
+            setTimeout(square, delay, col*(height/this.numRows), row*(height/this.numRows), height/this.numRows)
+        }
+        else{
+            fill('#171c28');
+            square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
+        }
     }
     getEntry(row,col){
         return this.grid[row][col];
     }
 }
 class node {
-    constructor(x, y, dist) {
+    constructor(x, y, dist, prev) {
         this.x = x;
         this.y = y;
         this.dist = dist;
-        this.prev = this;
+        if (prev){
+            this.prev = prev;
+        }
+        else{
+            this.prev = this;
+        }
     }
 }
 /*
@@ -163,11 +176,9 @@ function mousePressed(){
     if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height){
         if (currentGrid.startSelected == true){
             fillInSpace(false, true, false);
-            currentGrid.startSelected = false;
         }
         else if (currentGrid.endSelected == true){
             fillInSpace(false, false, true);
-            currentGrid.endSelected = false;
             }
         else if (currentGrid.ran == false && document.getElementById('tutorial').style.display == "none"){
             fillInSpace(false, false, false);
@@ -226,16 +237,17 @@ function fillInSpace(dragged, startCall, endCall){
                 && mouseY > y && mouseY <= y + height/currentGrid.numRows){
                     let effectiveY = floor(mouseY/(height/currentGrid.numRows));
                     let effectiveX = floor(mouseX/(height/currentGrid.numRows));
-                    //console.log(effectiveY);
-                    //console.log(effectiveX);
+
                     if (currentGrid.getEntry(effectiveY, effectiveX) == "Open"){
                         if (startCall == true && currentGrid.startMade == false){
                             currentGrid.markSpotAsStart(effectiveY, effectiveX);
                             cursor('default');
+                            currentGrid.startSelected = false;
                         }
                         else if (endCall == true && currentGrid.endMade == false){
                             currentGrid.markSpotAsEnd(effectiveY, effectiveX);
                             cursor('default');
+                            currentGrid.endSelected = false;
                         }
                         else if (startCall == false && endCall == false){
                             currentGrid.markSpotAsWall(effectiveY, effectiveX);
@@ -248,7 +260,6 @@ function fillInSpace(dragged, startCall, endCall){
             }
         }
     }
-    //console.log(currentGrid);
 }
 function resetCanvas(rows){
     //resizeCanvas(windowHeight * (4/5), windowHeight * (4/5));
@@ -309,7 +320,7 @@ function BFS(gridW){
 
     let q = new Queue();
     q.enqueue(source);
-    gridW.grid[source.x][source.y] = "Visited";
+    gridW.visitedGrid[source.x][source.y] = true;
     let visitTimer = 0;
     while (q.size() > 0){
         let p = q.dequeue();
@@ -327,7 +338,7 @@ function BFS(gridW){
             return dist;
         }
 
-        if (p.x - 1 >= 0 && (gridW.getEntry(p.x - 1, p.y) != "Wall")){
+        if (p.x - 1 >= 0 && (gridW.getEntry(p.x - 1, p.y) != "Wall") && (!gridW.visitedGrid[p.x - 1][p.y])){
             if (gridW.getEntry(p.x - 1, p.y) == "Open" || gridW.getEntry(p.x - 1, p.y) == "End"){
                 let n = new node(p.x - 1, p.y, p.dist + 1);
                 n.prev = p;
@@ -337,7 +348,7 @@ function BFS(gridW){
                 }
             }
         }
-        if (p.x + 1 < gridW.numRows && (gridW.getEntry(p.x + 1, p.y) != "Wall")){
+        if (p.x + 1 < gridW.numRows && (gridW.getEntry(p.x + 1, p.y) != "Wall") && (!gridW.visitedGrid[p.x + 1][p.y])){
             if (gridW.getEntry(p.x + 1, p.y) == "Open" || gridW.getEntry(p.x + 1, p.y) == "End"){
                 let n = new node(p.x + 1, p.y, p.dist + 1);
                 n.prev = p;
@@ -347,7 +358,7 @@ function BFS(gridW){
                 }
             }
         }
-        if (p.y - 1 >= 0 && (gridW.getEntry(p.x, p.y - 1) != "Wall")){
+        if (p.y - 1 >= 0 && (gridW.getEntry(p.x, p.y - 1) != "Wall") && (!gridW.visitedGrid[p.x][p.y - 1])){
             if (gridW.getEntry(p.x, p.y - 1) == "Open" || gridW.getEntry(p.x, p.y - 1) == "End"){
                 let n = new node(p.x, p.y - 1, p.dist+1);
                 n.prev = p;
@@ -357,7 +368,7 @@ function BFS(gridW){
                 }
             }
         }
-        if (p.y + 1 < gridW.numCols && (gridW.getEntry(p.x, p.y + 1) != "Wall")){
+        if (p.y + 1 < gridW.numCols && (gridW.getEntry(p.x, p.y + 1) != "Wall") && (!gridW.visitedGrid[p.x][p.y + 1])){
             if (gridW.getEntry(p.x, p.y + 1) == "Open" || gridW.getEntry(p.x, p.y + 1) == "End"){
                 let n = new node(p.x, p.y + 1, p.dist + 1);
                 n.prev = p;
@@ -386,7 +397,7 @@ function buttonPressed(button){
         if (currentGrid.startMade == true && currentGrid.endMade == true && currentGrid.ran == false){
             let startTime = performance.now();
             let bfs = BFS(currentGrid);
-            console.log(bfs);
+            console.log("Distance: " + bfs);
             let endTime = performance.now();
             console.log("Calculation took " + (endTime - startTime).toFixed(2) + " ms");
             var snackbar = document.getElementById("snackbar");
@@ -415,6 +426,57 @@ function buttonPressed(button){
         }
         else{
             alert("End has already been made, press 'Reset' to start a new board.");
+        }
+    }
+    else if (button.id == "GenerateMaze"){
+        resetCanvas(currentGrid.numRows);
+        generateMazePrim(currentGrid);
+    }
+}
+function generateMazePrim(gridW){
+    for (let i = 0; i < gridW.numRows; i++){
+        for (let j = 0; j < gridW.numCols; j++){
+            gridW.markSpotAsWall(i,j);
+        }
+    }
+    let animationTimer = 0;
+    let start = new node(ceil(gridW.numRows/2), floor(gridW.numCols/2));
+    gridW.unmarkSpot(start.x, start.y);
+
+    let frontierCells = [];
+    if (start.x - 2 >= 1 && gridW.getEntry(start.x - 2, start.y) == "Wall") {frontierCells.push(new node(start.x - 2, start.y, 2, start));}
+    if (start.x + 2 < gridW.numRows - 1 && gridW.getEntry(start.x + 2, start.y) == "Wall") {frontierCells.push(new node(start.x + 2, start.y, 2, start));}
+    if (start.y - 2 >= 1 && gridW.getEntry(start.x, start.y - 2) == "Wall") {frontierCells.push(new node(start.x, start.y - 2, 2, start));}
+    if (start.y + 2 < gridW.numCols - 1 && gridW.getEntry(start.x, start.y + 2) == "Wall") {frontierCells.push(new node(start.x, start.y + 2, 2, start));}
+    
+    while (frontierCells.length > 0){
+        animationTimer++;
+        let randomCellIndex = floor(Math.random() * (frontierCells.length-1));
+        let randomCell = frontierCells[randomCellIndex];
+        gridW.unmarkSpot(randomCell.x, randomCell.y, (animationTimer*200)/currentGrid.numRows);
+
+        let neighbors = [];
+        if (randomCell.x - 2 >= 1 && gridW.getEntry(randomCell.x - 2, randomCell.y) == "Open") {neighbors.push(new node(randomCell.x - 2, randomCell.y, 2, randomCell));}
+        if (randomCell.x + 2 < gridW.numRows - 1 && gridW.getEntry(randomCell.x + 2, randomCell.y) == "Open") {neighbors.push(new node(randomCell.x + 2, randomCell.y, 2, randomCell));}
+        if (randomCell.y - 2 >= 1 && gridW.getEntry(randomCell.x, randomCell.y - 2) == "Open") {neighbors.push(new node(randomCell.x, randomCell.y - 2, 2, randomCell));}
+        if (randomCell.y + 2 < gridW.numCols - 1 && gridW.getEntry(randomCell.x, randomCell.y + 2) == "Open") {neighbors.push(new node(randomCell.x, randomCell.y + 2, 2, randomCell));}
+
+        let randomNeighborIndex = floor(Math.random() * (neighbors.length-1));
+        let randomNeighbor = neighbors[randomNeighborIndex];
+        let middleXOffset = (randomNeighbor.x - randomCell.x)/2;
+        let middleYOffset = (randomNeighbor.y - randomCell.y)/2;
+        if (gridW.visitedGrid[randomCell.x][randomCell.y] == false){gridW.unmarkSpot(randomCell.x + middleXOffset, randomCell.y + middleYOffset, (animationTimer*200)/currentGrid.numRows);}
+
+        if (randomCell.x - 2 >= 1 && gridW.getEntry(randomCell.x - 2, randomCell.y) == "Wall") {frontierCells.push(new node(randomCell.x - 2, randomCell.y, 2, randomCell));}
+        if (randomCell.x + 2 < gridW.numRows - 1 && gridW.getEntry(randomCell.x + 2, randomCell.y) == "Wall") {frontierCells.push(new node(randomCell.x + 2, randomCell.y, 2, randomCell));}
+        if (randomCell.y - 2 >= 1 && gridW.getEntry(randomCell.x, randomCell.y - 2) == "Wall") {frontierCells.push(new node(randomCell.x, randomCell.y - 2, 2, randomCell));}
+        if (randomCell.y + 2 < gridW.numCols - 1 && gridW.getEntry(randomCell.x, randomCell.y + 2) == "Wall") {frontierCells.push(new node(randomCell.x, randomCell.y + 2, 2, randomCell));}
+        gridW.visitedGrid[randomCell.x][randomCell.y] = true;
+        frontierCells.splice(randomCellIndex, 1);
+    }
+    for (let i = 0; i < gridW.numRows; i++){
+        for (let j = 0; j < gridW.numCols; j++){
+            gridW.visitedGrid[i][j] = false;
         }
     }
 }
