@@ -6,17 +6,16 @@
     <link rel="stylesheet" href="style.css">
     <script src="p5.js"></script>
     <script src="index.js"></script>
-    <title>Pathfinding Project</title>
+    <title>Visualizing Shortest Path</title>
 </head>
 
 <body>
     <div id="tutorial" class="tutorial">
         <div class="tutorialContent">
             <span class="close">&times;</span>
-            <br><h3>Welcome to Visualizing Shortest Path v.1.1!</h3><br>
+            <br><h3>Welcome to Visualizing Shortest Path!</h3><br>
             <br><h5>This project uses the P5.js library to visualize pathfinding algorithms. 
-                Right now the only algorithm is Breadth-First Search, but A* will be implemented soon!
-            <br><br>To use this tool, simply "Place Start", "Place End", click on the grid to make obstacles, then click "Run Algorithm".</h5>
+            <br><br>To use this tool, simply "Place Start", "Place End", click on the grid to make obstacles or generate a maze, then click "Run Algorithm".</h5>
         </div>
     </div>
 
@@ -37,6 +36,7 @@
             <button type="button" class="IncreaseRows" id="IncreaseRows" onclick="buttonPressed(this)">Increase rows</button>
             <button type="button" class="ReduceRows" id="ReduceRows" onclick="buttonPressed(this)">Reduce rows</button>
             <button type="button" class="GenerateMaze" id="GenerateMaze" onclick="buttonPressed(this)">Generate Maze</button>
+            <button type="button" class="ChangeAlgorithm" id="ChangeAlgorithm" onclick="buttonPressed(this)">Change Algorithm: A*</button>
             <button type="button" class="Reset" id="Reset" onclick="buttonPressed(this)">Reset</button>
             <button type="button" class="RunAlgorithm" id="RunAlgorithm" onclick="buttonPressed(this)">Run Algorithm</button>
     </h1>

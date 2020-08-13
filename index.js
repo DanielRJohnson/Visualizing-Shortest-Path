@@ -7,9 +7,8 @@
 */
 
 /*   TODO
-* A*
-* Make tutorial better
 * Clean up code
+* Make tutorial better
 * Mobile-friendly layout
 */
 
@@ -50,14 +49,17 @@ class gridWrapper{
     }
     markSpotAsVisited(row,col, delay){
         this.visitedGrid[row][col] = true;
-        if (document.getElementById("toggle").checked == true){
-            setTimeout(fill, delay, '#7CC5FF');
-            setTimeout(square, delay, col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
+        if (this.grid[row][col] == "Open"){
+            if (document.getElementById("toggle").checked == true){
+                    setTimeout(fill, delay, '#7CC5FF');
+                    setTimeout(square, delay, col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
+            }
+            else {
+                fill('#7CC5FF');
+                square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
+            }
         }
-        else {
-            fill('#7CC5FF');
-            square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
-        }
+        
     }
     markSpotAsStart(row,col){
         this.grid[row][col] = "Start";
@@ -97,8 +99,12 @@ class node {
         else{
             this.prev = this;
         }
+        this.f = Infinity;
+        this.g = Infinity;
+        this.h = Infinity;
     }
 }
+
 /*
 * I am aware that with JS arrays you can mimic a queue, but the "Shift"
 * function that it uses is O(n) whereas my dequeue is O(1).
@@ -114,8 +120,7 @@ class Queue{
         this.tail++;
     }
     dequeue(){
-        var length = this.tail - this.head;
-        if (length <= 0){
+        if ((this.tail - this.head) <= 0){
             return undefined;
         }
         var deletedItem = this.elements[this.head];
@@ -243,12 +248,25 @@ function buttonPressed(button){
     else if (button.id == "RunAlgorithm"){
         if (currentGrid.startMade == true && currentGrid.endMade == true && currentGrid.ran == false){
             let startTime = performance.now();
-            let bfs = BFS(currentGrid);
-            console.log("Distance: " + bfs);
+            let dist;
+            let alg = document.getElementById("ChangeAlgorithm");
+            if (alg.innerHTML == "Change Algorithm: BFS"){
+                dist = BFS(currentGrid);
+            }
+            else {
+                dist = AStar(currentGrid);
+            }
+            console.log("Distance: " + dist);
             let endTime = performance.now();
             console.log("Calculation took " + (endTime - startTime).toFixed(2) + " ms");
             var snackbar = document.getElementById("snackbar");
-            snackbar.innerHTML = "This algorithm took " + (endTime - startTime).toFixed(2) + " ms to compute a distance of " + bfs + " units";
+            if (dist != -1){
+                snackbar.innerHTML = "This algorithm took " + (endTime - startTime).toFixed(2) + " ms to compute a distance of " + dist + " units";
+            }
+            else{
+                snackbar.innerHTML = "This algorithm took " + (endTime - startTime).toFixed(2) + " ms to realize that there is no solution";
+            }
+            currentGrid.ran = true;
             snackbar.className = "show";
             setTimeout(function(){snackbar.className = snackbar.className.replace("show", "")}, 5000);
         }
@@ -278,6 +296,14 @@ function buttonPressed(button){
     else if (button.id == "GenerateMaze"){
         resetCanvas(currentGrid.numRows);
         generateMazePrim(currentGrid);
+    }
+    else if (button.id == "ChangeAlgorithm"){
+        if (button.innerHTML == "Change Algorithm: BFS"){
+            button.innerHTML = "Change Algorithm: A*";
+        }
+        else{
+            button.innerHTML = "Change Algorithm: BFS";
+        }
     }
 }
 function fillInSpace(dragged, startCall, endCall){
@@ -327,47 +353,47 @@ function resetCanvas(rows){
     }
     
 }
-function recreatePath(p, gridW){
+function drawPath(path, gridW){
     let pathTimer = 0;
-    while (p.prev != p){
-        if (gridW.getEntry(p.x, p.y) != "End" && gridW.getEntry(p.x, p.y) != "Start"){
+    for (let i in path){
+        if (gridW.getEntry(path[i].x, path[i].y) != "Start" && gridW.getEntry(path[i].x, path[i].y) != "End"){
             if (document.getElementById("toggle").checked == true){
                 setTimeout(fill, (pathTimer*1000)/currentGrid.numRows, '#e4f1fe');
-                setTimeout(square, (pathTimer*1000)/currentGrid.numRows, p.y*(height/currentGrid.numRows), p.x*(height/currentGrid.numRows), height/currentGrid.numRows);
+                setTimeout(square, (pathTimer*1000)/currentGrid.numRows, path[i].y*(height/currentGrid.numRows), path[i].x*(height/currentGrid.numRows), height/currentGrid.numRows);
             }
             else{
                 fill('#e4f1fe');
-                square(p.y*(height/currentGrid.numRows), p.x*(height/currentGrid.numRows), height/currentGrid.numRows);
+                square(path[i].y*(height/currentGrid.numRows), path[i].x*(height/currentGrid.numRows), height/currentGrid.numRows);
             }
         }
         pathTimer++;
+    }
+}
+function recreatePath(p, gridW){
+    let path = [];
+    while (p.prev != p){
+        path.unshift(p);
         p = p.prev;
     }
+    drawPath(path, gridW);
 }
 function BFS(gridW){
     let source = new node(0,0,0);
     let dest = new node(0,0,0);
-    let flag1 = false, flag2 = false;
     for (let i = 0; i < gridW.numRows; i++){
         for (let j = 0; j < gridW.numCols; j++){
             if (gridW.getEntry(i,j) == "Start"){
                 source.x = i;
                 source.y = j;
                 console.log("Start found at: ( " + (j+1) + ", " + (i+1) + " )");
-                flag1 = true;
             }
             if (gridW.getEntry(i,j) == "End"){
                 dest.x = i;
                 dest.y = j;
                 console.log("End found at: ( " + (j+1) + ", " + (i+1) + " )");
-                flag2 = true;
             }
         }
     }
-    if (flag1 == false || flag2 == false){
-        return -1;
-    }
-
     let q = new Queue();
     q.enqueue(source);
     gridW.visitedGrid[source.x][source.y] = true;
@@ -378,7 +404,6 @@ function BFS(gridW){
         if (gridW.getEntry(p.x, p.y) == "End"){
             gridW.grid[source.x][source.y] = "Start";
             let dist = p.dist;
-            currentGrid.ran = true;
             if (document.getElementById("toggle").checked == true){
                 setTimeout(recreatePath, (visitTimer*100)/currentGrid.numRows, p, gridW);
             }
@@ -433,6 +458,74 @@ function BFS(gridW){
     gridW.grid[source.x][source.y] = "Start";
     return -1;
 }
+function heuristic(a, b){
+    return abs(a.x - b.x) + abs(a.y - b.y);
+    //return dist(a.x, a.y, b.x, b.y);
+}
+function AStar(gridW){
+    //automate this shit
+    let start = new node(0,0,0);
+    let end = new node(0,0,0);
+    for (let i = 0; i < gridW.numRows; i++){
+        for (let j = 0; j < gridW.numCols; j++){
+            if (gridW.getEntry(i,j) == "Start"){
+                start.x = i;
+                start.y = j;
+                console.log("Start found at: ( " + (j+1) + ", " + (i+1) + " )");
+            }
+            if (gridW.getEntry(i,j) == "End"){
+                end.x = i;
+                end.y = j;
+                console.log("End found at: ( " + (j+1) + ", " + (i+1) + " )");
+            }
+        }
+    }
+    start.g = 0;
+    start.h = heuristic(start, end);
+    start.f = start.h;
+    let openSet = [start];
+    let visitTimer = 0;
+    while(openSet.length > 0){
+        visitTimer++;
+        //this can be O(1) with priority queue
+        let lowestIndex = 0;
+        for (let i in openSet){
+            if (openSet[i].f <= openSet[lowestIndex].f){
+                lowestIndex = i;
+            }
+        }
+        let current = openSet[lowestIndex];
+
+        if (gridW.getEntry(current.x, current.y) == "End"){ //Are we done?
+            setTimeout(recreatePath, (visitTimer*500)/currentGrid.numRows, current, gridW);
+            return current.g;
+        }
+        //can be just remove if in priority queue
+        openSet.splice(lowestIndex, 1);
+
+        let neighbors = [];
+        //figure out how to clean these blocks up
+        if (current.x - 1 >= 0) {neighbors.push(new node(current.x - 1, current.y, 0, current));}
+        if (current.x + 1 < gridW.numRows) {neighbors.push(new node(current.x + 1, current.y, 0, current));}
+        if (current.y - 1 >= 0) {neighbors.push(new node(current.x, current.y - 1, 0, current));}
+        if (current.y + 1 < gridW.numCols) {neighbors.push(new node(current.x, current.y + 1, 0, current));}
+        let tentativeG = current.g + 1;
+        for (let i in neighbors){
+            if (gridW.getEntry(neighbors[i].x, neighbors[i].y) != "Wall" && !gridW.visitedGrid[neighbors[i].x][neighbors[i].y]){
+                if (tentativeG < neighbors[i].g){
+                    neighbors[i].g = tentativeG;
+                    neighbors[i].h = heuristic(neighbors[i], end);
+                    neighbors[i].f = neighbors[i].g + neighbors[i].h;
+                    if (!openSet.includes(neighbors[i])){
+                        openSet.push(neighbors[i]);
+                        gridW.markSpotAsVisited(neighbors[i].x, neighbors[i].y, (visitTimer*500)/currentGrid.numRows);
+                    }
+                }
+            }
+        }
+    }
+    return -1; //No solution
+}
 function generateMazePrim(gridW){
     for (let i = 0; i < gridW.numRows; i++){
         for (let j = 0; j < gridW.numCols; j++){
@@ -453,7 +546,7 @@ function generateMazePrim(gridW){
         animationTimer++;
         let randomCellIndex = floor(Math.random() * (frontierCells.length-1));
         let randomCell = frontierCells[randomCellIndex];
-        gridW.unmarkSpot(randomCell.x, randomCell.y, (animationTimer*200)/currentGrid.numRows);
+        gridW.unmarkSpot(randomCell.x, randomCell.y, (animationTimer*100)/currentGrid.numRows);
 
         let neighbors = [];
         if (randomCell.x - 2 >= 1 && gridW.getEntry(randomCell.x - 2, randomCell.y) == "Open") {neighbors.push(new node(randomCell.x - 2, randomCell.y, 2, randomCell));}
@@ -465,7 +558,7 @@ function generateMazePrim(gridW){
         let randomNeighbor = neighbors[randomNeighborIndex];
         let middleXOffset = (randomNeighbor.x - randomCell.x)/2;
         let middleYOffset = (randomNeighbor.y - randomCell.y)/2;
-        if (gridW.visitedGrid[randomCell.x][randomCell.y] == false){gridW.unmarkSpot(randomCell.x + middleXOffset, randomCell.y + middleYOffset, (animationTimer*200)/currentGrid.numRows);}
+        if (gridW.visitedGrid[randomCell.x][randomCell.y] == false){gridW.unmarkSpot(randomCell.x + middleXOffset, randomCell.y + middleYOffset, (animationTimer*100)/currentGrid.numRows);}
 
         if (randomCell.x - 2 >= 1 && gridW.getEntry(randomCell.x - 2, randomCell.y) == "Wall") {frontierCells.push(new node(randomCell.x - 2, randomCell.y, 2, randomCell));}
         if (randomCell.x + 2 < gridW.numRows - 1 && gridW.getEntry(randomCell.x + 2, randomCell.y) == "Wall") {frontierCells.push(new node(randomCell.x + 2, randomCell.y, 2, randomCell));}
