@@ -230,6 +230,56 @@ function keyPressed(){
 }
 
 //Custom Functions
+function buttonPressed(button){
+    if (button.id == "ReduceRows" && currentGrid.numRows > 5){
+        resetCanvas(currentGrid.numRows-5);
+    }
+    else if (button.id == "IncreaseRows" && currentGrid.numRows < 100){
+        resetCanvas(currentGrid.numRows+5);
+    }
+    else if (button.id == "Reset"){
+        resetCanvas(currentGrid.numRows);
+    }
+    else if (button.id == "RunAlgorithm"){
+        if (currentGrid.startMade == true && currentGrid.endMade == true && currentGrid.ran == false){
+            let startTime = performance.now();
+            let bfs = BFS(currentGrid);
+            console.log("Distance: " + bfs);
+            let endTime = performance.now();
+            console.log("Calculation took " + (endTime - startTime).toFixed(2) + " ms");
+            var snackbar = document.getElementById("snackbar");
+            snackbar.innerHTML = "This algorithm took " + (endTime - startTime).toFixed(2) + " ms to compute a distance of " + bfs + " units";
+            snackbar.className = "show";
+            setTimeout(function(){snackbar.className = snackbar.className.replace("show", "")}, 5000);
+        }
+        else if (currentGrid.startMade == false || currentGrid.endMade == false){
+            alert("Make sure to set a start and end before running the algorithm.")
+        }
+        
+    }
+    else if (button.id == "PlaceStart"){
+        if (currentGrid.startMade == false){
+            cursor('start.png', 10, 10);
+            currentGrid.startSelected = true;
+        }
+        else {
+            alert("Start has already been made, press 'Reset' to start a new board.");
+        }
+    }
+    else if (button.id == "PlaceEnd"){
+        if (currentGrid.endMade == false){
+            cursor('end.png', 10, 10);
+            currentGrid.endSelected = true;
+        }
+        else{
+            alert("End has already been made, press 'Reset' to start a new board.");
+        }
+    }
+    else if (button.id == "GenerateMaze"){
+        resetCanvas(currentGrid.numRows);
+        generateMazePrim(currentGrid);
+    }
+}
 function fillInSpace(dragged, startCall, endCall){
     for(let x = 0; x < width; x += height/currentGrid.numRows){
         for (let y = 0; y < height - 1; y += height/currentGrid.numRows){
@@ -382,56 +432,6 @@ function BFS(gridW){
     }
     gridW.grid[source.x][source.y] = "Start";
     return -1;
-}
-function buttonPressed(button){
-    if (button.id == "ReduceRows" && currentGrid.numRows > 5){
-        resetCanvas(currentGrid.numRows-5);
-    }
-    else if (button.id == "IncreaseRows" && currentGrid.numRows < 75){
-        resetCanvas(currentGrid.numRows+5);
-    }
-    else if (button.id == "Reset"){
-        resetCanvas(currentGrid.numRows);
-    }
-    else if (button.id == "RunAlgorithm"){
-        if (currentGrid.startMade == true && currentGrid.endMade == true && currentGrid.ran == false){
-            let startTime = performance.now();
-            let bfs = BFS(currentGrid);
-            console.log("Distance: " + bfs);
-            let endTime = performance.now();
-            console.log("Calculation took " + (endTime - startTime).toFixed(2) + " ms");
-            var snackbar = document.getElementById("snackbar");
-            snackbar.innerHTML = "This algorithm took " + (endTime - startTime).toFixed(2) + " ms to compute a distance of " + bfs + " units";
-            snackbar.className = "show";
-            setTimeout(function(){snackbar.className = snackbar.className.replace("show", "")}, 5000);
-        }
-        else if (currentGrid.startMade == false || currentGrid.endMade == false){
-            alert("Make sure to set a start and end before running the algorithm.")
-        }
-        
-    }
-    else if (button.id == "PlaceStart"){
-        if (currentGrid.startMade == false){
-            cursor('start.png', 10, 10);
-            currentGrid.startSelected = true;
-        }
-        else {
-            alert("Start has already been made, press 'Reset' to start a new board.");
-        }
-    }
-    else if (button.id == "PlaceEnd"){
-        if (currentGrid.endMade == false){
-            cursor('end.png', 10, 10);
-            currentGrid.endSelected = true;
-        }
-        else{
-            alert("End has already been made, press 'Reset' to start a new board.");
-        }
-    }
-    else if (button.id == "GenerateMaze"){
-        resetCanvas(currentGrid.numRows);
-        generateMazePrim(currentGrid);
-    }
 }
 function generateMazePrim(gridW){
     for (let i = 0; i < gridW.numRows; i++){
