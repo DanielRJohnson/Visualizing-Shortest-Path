@@ -37,7 +37,7 @@ function AStar(gridW){
                     neighbor.f = neighbor.g + neighbor.h;
                     if (!openSet.includes(neighbor)){
                         openSet.enqueue(neighbor, neighbor.f);
-                        gridW.markSpotAsVisited(neighbor.x, neighbor.y, (visitTimer*500)/gridW.numRows);
+                        gridW.markSpotAsVisited(neighbor.x, neighbor.y, (visitTimer*100)/gridW.numRows);
                     }
                 }
             }

@@ -44,11 +44,5 @@ function recreatePath(p, gridW, visitTimer){
     if (document.getElementById("toggle").checked == false){
         drawPath(path, gridW);
     }
-    else if (document.getElementById("RunAlgorithm").innerHTML == "Run Algorithm: A*"){
-        setTimeout(drawPath, (visitTimer*500)/gridW.numRows, path, gridW);
-    }
-    else {
-        setTimeout(drawPath, (visitTimer*100)/gridW.numRows, path, gridW);
-    }
-    
+    setTimeout(drawPath, (visitTimer*100)/gridW.numRows, path, gridW);
 }
