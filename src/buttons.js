@@ -53,7 +53,7 @@ function buttonPressed(button){
             }
             var snackbar = document.getElementById("snackbar");
             if (info.dist != -1){
-                snackbar.innerHTML = "This algorithm took " + info.time.toFixed(2) + " ms to compute a distance of " + info.dist + " units";
+                snackbar.innerHTML = "This algorithm took " + info.time.toFixed(2) + " ms to compute a distance of " + info.dist.toFixed(2) + " units";
             }
             else{
                 snackbar.innerHTML = "This algorithm took " + info.time.toFixed(2) + " ms to realize that there is no solution";

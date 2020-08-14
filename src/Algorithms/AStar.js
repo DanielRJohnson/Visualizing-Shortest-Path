@@ -35,7 +35,7 @@ function AStar(gridW){
         let neighbors = current.getNeighbors(gridW);
         for (let i in neighbors){
             let neighbor = neighbors[i];
-            let tentativeG = current.g + 1;
+            let tentativeG = current.g + heuristic(current, neighbor); //let tentativeG = current.g + 1;
             if (gridW.getEntry(neighbor.x, neighbor.y) != "Wall" && !gridW.visitedGrid[neighbor.x][neighbor.y]){
                 if (tentativeG < neighbor.g){
                     neighbor.g = tentativeG;
