@@ -1,3 +1,9 @@
+/*
+* @Author: Daniel Johnson
+* @File: AStar.js
+* @Date: 8-11-2020
+* @breif: This file provides an AStar function that returns distance and time elapsed
+*/
 function heuristic(a, b){
     if (document.getElementById("toggleDiag").checked){
         return dist(a.x, a.y, b.x, b.y); //euclidean

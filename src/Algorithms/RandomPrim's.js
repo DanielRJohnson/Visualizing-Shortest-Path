@@ -1,3 +1,10 @@
+/*
+* @Author: Daniel Johnson
+* @File: RandomPrim's.js
+* @Date: 8-11-2020
+* @breif: This file uses random Prim's algorithm to generate and draw a maze
+*         !!!This code is not very polished or efficient, fair warning!!!
+*/
 function generateMazePrim(gridW){
     currentGrid.animating = true;
     for (let i = 0; i < gridW.numRows; i++){

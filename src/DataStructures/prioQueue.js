@@ -1,3 +1,9 @@
+/*
+* @Author: Daniel Johnson
+* @File: prioQueue.js
+* @Date: 8-11-2020
+* @breif: This file implements a priority queue to be used by A* and BFS
+*/
 class QElement{
     constructor(element, priority){
         this.element = element;

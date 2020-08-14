@@ -2,8 +2,7 @@
 * @Author: Daniel Johnson
 * @File: index.js
 * @Date: 8-11-2020
-* @breif: This file implements pathfinding algorithms and visualizes
-*         them with help from the p5.js library
+* @breif: This file handles user interaction & P5 functions
 */
 
 /* MIGHT ADD AT SOME POINT

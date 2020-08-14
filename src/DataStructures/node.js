@@ -1,3 +1,9 @@
+/*
+* @Author: Daniel Johnson
+* @File: node.js
+* @Date: 8-11-2020
+* @breif: This file implements a node class to be used by A* and BFS
+*/
 class node {
     constructor(x, y, dist, prev, g) {
         this.x = x;

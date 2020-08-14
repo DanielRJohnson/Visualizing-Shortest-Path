@@ -1,3 +1,9 @@
+/*
+* @Author: Daniel Johnson
+* @File: path.js
+* @Date: 8-11-2020
+* @breif: This file handles the recreation and drawing of the path
+*/
 function drawPath(path, gridW){
     let pathTimer = 0;
     stroke('black');

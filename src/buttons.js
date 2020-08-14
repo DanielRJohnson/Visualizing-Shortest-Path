@@ -1,3 +1,9 @@
+/*
+* @Author: Daniel Johnson
+* @File: index.js
+* @Date: 8-11-2020
+* @breif: This file handles all button inputs
+*/
 function buttonPressed(button){
     if (button.id == "ReduceRows" && currentGrid.numRows > 5){
         if (!currentGrid.animating){

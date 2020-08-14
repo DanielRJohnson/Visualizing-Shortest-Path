@@ -1,3 +1,9 @@
+/*
+* @Author: Daniel Johnson
+* @File: index.js
+* @Date: 8-11-2020
+* @breif: This file implements a Breadth-first search function that returns distance and time elapsed
+*/
 function BFS(gridW){
     let startTime = performance.now();
     let source = new node(gridW.startX, gridW.startY, 0);

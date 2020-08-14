@@ -1,3 +1,9 @@
+/*
+* @Author: Daniel Johnson
+* @File: index.js
+* @Date: 8-11-2020
+* @breif: This file implements a grid wrapper class to be displayed using p5
+*/
 class gridWrapper{
     constructor(rows) {
         this.numRows = rows;
