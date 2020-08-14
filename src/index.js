@@ -7,10 +7,6 @@
 */
 
 /* MIGHT ADD AT SOME POINT
-* less having to reset
-*   - reset start and end without reset
-*   - change algorithm without reset
-*   - run more than one time without reset
 * better mobile layout
 */
 new p5();
@@ -56,24 +52,26 @@ function windowResized() {
     resetCanvas(currentGrid.numRows);
 }
 function mousePressed(){
-    if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height){
+    if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height && !currentGrid.animating){
         if (currentGrid.startSelected == true){
-            fillInSpace(false, true, false);
+            fillInSpace(mouseButton, true, false);
         }
         else if (currentGrid.endSelected == true){
-            fillInSpace(false, false, true);
+            fillInSpace(mouseButton, false, true);
             }
-        else if (currentGrid.ran == false && document.getElementById('tutorial').style.display == "none"
+        else if (document.getElementById('tutorial').style.display == "none"
             && document.getElementById('tutorial2').style.display == "none" && document.getElementById('tutorial3').style.display == "none"
             && document.getElementById('tutorial4').style.display == "none" && document.getElementById('tutorial5').style.display == "none"){
-            fillInSpace(false, false, false);
+            fillInSpace(mouseButton, false, false);
         }
     }
     
 }
 function mouseDragged(){
-    if (currentGrid.ran == false && document.getElementById('tutorial').style.display == "none"){
-        fillInSpace(true, false, false);
+    if (document.getElementById('tutorial').style.display == "none" && !currentGrid.animating
+    && document.getElementById('tutorial2').style.display == "none" && document.getElementById('tutorial3').style.display == "none"
+    && document.getElementById('tutorial4').style.display == "none" && document.getElementById('tutorial5').style.display == "none"){
+        fillInSpace(mouseButton, false, false);
     }
 }
 function touchStarted(){
@@ -84,45 +82,44 @@ function touchMoved(){
 }
 
 //Other Functions
-function fillInSpace(dragged, startCall, endCall){
-    for(let x = 0; x < width; x += height/currentGrid.numRows){
-        for (let y = 0; y < height - 1; y += height/currentGrid.numRows){
-            if (mouseX > x && mouseX <= x + height/currentGrid.numRows
-                && mouseY > y && mouseY <= y + height/currentGrid.numRows){
-
-                let effectiveY = floor(mouseY/(height/currentGrid.numRows));
-                let effectiveX = floor(mouseX/(height/currentGrid.numRows));
-                if (currentGrid.getEntry(effectiveY, effectiveX) == "Open"){
-                    if (startCall && !currentGrid.startMade){
-                        currentGrid.markSpotAsStart(effectiveY, effectiveX);
-                        cursor('default');
-                    }
-                    else if (endCall && !currentGrid.endMade){
-                        currentGrid.markSpotAsEnd(effectiveY, effectiveX);
-                        cursor('default');
-                    }
-                    else if (!startCall && !endCall){
-                        currentGrid.markSpotAsWall(effectiveY, effectiveX);
-                    }
-                }
-                else if (dragged == false && !startCall && !endCall && currentGrid.getEntry(effectiveY, effectiveX) == "Wall"){
-                    currentGrid.unmarkSpot(effectiveY, effectiveX);
-                }  
+function fillInSpace(mouseButton, startCall, endCall){
+    strokeWeight(0.25);
+    if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height){
+        let effectiveY = floor(mouseY/(height/currentGrid.numRows));
+        let effectiveX = floor(mouseX/(height/currentGrid.numRows));
+        if (currentGrid.getEntry(effectiveY, effectiveX) == "Open"){
+            if (startCall){
+                currentGrid.markSpotAsStart(effectiveY, effectiveX);
+                cursor('default');
+            }
+            else if (endCall){
+                currentGrid.markSpotAsEnd(effectiveY, effectiveX);
+                cursor('default');
+            }
+            else if (mouseButton === LEFT){
+                currentGrid.markSpotAsWall(effectiveY, effectiveX);
             }
         }
+        else if (!startCall && !endCall && mouseButton === RIGHT && currentGrid.getEntry(effectiveY, effectiveX) == "Wall"){
+            currentGrid.unmarkSpot(effectiveY, effectiveX);
+        }
     }
+}
+function drawGrid(){
+    stroke('black');
+    strokeWeight(0.25);
+    for (let x = 0; x <= width; x += (height / currentGrid.numRows)) {
+		for (let y = 0; y <= height; y += (height / currentGrid.numRows)) {
+			line(x, 0, x, height);
+            line(0, y, width, y);
+        }
+    }
+    line(width-1, 0, width-1, height);
+    //noStroke();
 }
 function resetCanvas(rows){
     currentGrid = new gridWrapper(rows);
     resizeCanvas(document.getElementById('canvasContainer').offsetWidth, document.getElementById('canvasContainer').offsetHeight);
     background('#ecf0f1');
-    stroke('black');
-    strokeWeight(15/(2*currentGrid.numRows));
-    for (let x = 0; x <= width; x += (height / currentGrid.numRows)) {
-		for (let y = 0; y <= height; y += (height / currentGrid.numRows)) {
-			line(x, 0, x, height);
-			line(0, y, width, y);
-        }
-    }
-    line(width-1, 0, width-1, height);
+    drawGrid();
 }

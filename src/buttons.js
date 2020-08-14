@@ -1,16 +1,44 @@
 function buttonPressed(button){
     if (button.id == "ReduceRows" && currentGrid.numRows > 5){
-        resetCanvas(currentGrid.numRows-5);
+        if (!currentGrid.animating){
+            resetCanvas(currentGrid.numRows-5);
+        }
     }
     else if (button.id == "IncreaseRows" && currentGrid.numRows < 90){
-        resetCanvas(currentGrid.numRows+5);
+        if (!currentGrid.animating){
+            resetCanvas(currentGrid.numRows+5);
+        }
     }
     else if (button.id == "Reset"){
-        resetCanvas(currentGrid.numRows);
+        if (!currentGrid.animating){
+            resetCanvas(currentGrid.numRows);
+        }
     }
     else if (button.id == "RunAlgorithm"){
-        if (currentGrid.startMade == true && currentGrid.endMade == true && currentGrid.ran == false){
+        if (currentGrid.startMade == true && currentGrid.endMade == true){
             let info;
+            if (currentGrid.ran == true){
+                for (let i = 0; i < currentGrid.numRows; i++){
+                    for (let j = 0; j < currentGrid.numCols; j++){
+                        if (currentGrid.getEntry(i,j) == "Start"){
+                            currentGrid.visitedGrid[i][j] = false;
+                            fill('#00FF00');
+                            square(j*(height/currentGrid.numRows), i*(height/currentGrid.numRows), (height/currentGrid.numRows));
+                        }
+                        else if (currentGrid.getEntry(i,j) == "End"){
+                            currentGrid.visitedGrid[i][j] = false;
+                            fill('#FF0000');
+                            square(j*(height/currentGrid.numRows), i*(height/currentGrid.numRows), (height/currentGrid.numRows));
+                        }
+                        else if (currentGrid.getEntry(i,j) == "Open"){
+                            currentGrid.visitedGrid[i][j] = false;
+                            fill('#ecf0f1');
+                            square(j*(height/currentGrid.numRows), i*(height/currentGrid.numRows), (height/currentGrid.numRows));
+                        }
+                    }
+                }
+                drawGrid();
+            }
             if (button.innerHTML == "Run Algorithm: Breadth-First Search"){
                 info = BFS(currentGrid);
             }
@@ -33,42 +61,43 @@ function buttonPressed(button){
         }
     }
     else if (button.id == "PlaceStart"){
-        if (currentGrid.startMade == false){
-            cursor('images/start.png', 10, 10);
-            currentGrid.startSelected = true;
-        }
-        else {
-            alert("Start has already been made, press 'Reset' to start a new board.");
-        }
+        cursor('images/start.png', 10, 10);
+        currentGrid.startSelected = true;
+
     }
     else if (button.id == "PlaceEnd"){
-        if (currentGrid.endMade == false){
-            cursor('images/end.png', 10, 10);
-            currentGrid.endSelected = true;
-        }
-        else{
-            alert("End has already been made, press 'Reset' to start a new board.");
-        }
+        cursor('images/end.png', 10, 10);
+        currentGrid.endSelected = true;
     }
     else if (button.id == "GenerateMaze"){
-        resetCanvas(currentGrid.numRows);
-        generateMazePrim(currentGrid);
-    }
-    else if (button.id == "ChangeAlgorithm"){
-        if (button.innerHTML == "Change Algorithm: BFS"){
-            button.innerHTML = "Change Algorithm: A*";
-        }
-        else{
-            button.innerHTML = "Change Algorithm: BFS";
+        if (!currentGrid.animating){
+            resetCanvas(currentGrid.numRows);
+            generateMazePrim(currentGrid);
         }
     }
     else if (button.id == "A*"){
         document.getElementById("RunAlgorithm").innerHTML = "Run Algorithm: A*";
-        resetCanvas(currentGrid.numRows);
+        //this is to avoid clicks on the dropdown affecting the canvas
+        let effectiveX = floor(mouseX/(height/currentGrid.numRows));
+        let effectiveY = floor(mouseY/(height/currentGrid.numRows))
+        if (currentGrid.getEntry(effectiveY, effectiveX) == "Wall"){
+            currentGrid.unmarkSpot(effectiveY, effectiveX);
+        }
+        else{
+            currentGrid.markSpotAsWall(effectiveY, effectiveX);
+        }
     }
     else if (button.id == "BFS"){
         document.getElementById("RunAlgorithm").innerHTML = "Run Algorithm: Breadth-First Search";
-        resetCanvas(currentGrid.numRows);
+        //this is to avoid clicks on the dropdown affecting the canvas
+        let effectiveX = floor(mouseX/(height/currentGrid.numRows));
+        let effectiveY = floor(mouseY/(height/currentGrid.numRows))
+        if (currentGrid.getEntry(effectiveY, effectiveX) == "Wall"){
+            currentGrid.unmarkSpot(effectiveY, effectiveX);
+        }
+        else{
+            currentGrid.markSpotAsWall(effectiveY, effectiveX);
+        }
     }
     else if (button.id == "Next"){
         document.getElementById("tutorial").style.display = "none";

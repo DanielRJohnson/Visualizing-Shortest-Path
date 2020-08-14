@@ -1,4 +1,5 @@
 function generateMazePrim(gridW){
+    currentGrid.animating = true;
     for (let i = 0; i < gridW.numRows; i++){
         for (let j = 0; j < gridW.numCols; j++){
             gridW.markSpotAsWall(i,j);
@@ -12,11 +13,12 @@ function generateMazePrim(gridW){
     if (start.x + 2 < gridW.numRows - 1 && gridW.getEntry(start.x + 2, start.y) == "Wall") {frontierCells.push(new node(start.x + 2, start.y, 2, start));}
     if (start.y - 2 >= 1 && gridW.getEntry(start.x, start.y - 2) == "Wall") {frontierCells.push(new node(start.x, start.y - 2, 2, start));}
     if (start.y + 2 < gridW.numCols - 1 && gridW.getEntry(start.x, start.y + 2) == "Wall") {frontierCells.push(new node(start.x, start.y + 2, 2, start));}
-    
+    let visitTimer = 0;
     while (frontierCells.length > 0){
+        visitTimer++;
         let randomCellIndex = floor(Math.random() * (frontierCells.length-1));
         let randomCell = frontierCells[randomCellIndex];
-        gridW.unmarkSpot(randomCell.x, randomCell.y);
+        gridW.unmarkSpot(randomCell.x, randomCell.y, visitTimer);
 
         let neighbors = [];
         if (randomCell.x - 2 >= 1 && gridW.getEntry(randomCell.x - 2, randomCell.y) == "Open") {neighbors.push(new node(randomCell.x - 2, randomCell.y, 2, randomCell));}
@@ -29,7 +31,7 @@ function generateMazePrim(gridW){
         let middleXOffset = (randomNeighbor.x - randomCell.x)/2;
         let middleYOffset = (randomNeighbor.y - randomCell.y)/2;
         if (gridW.visitedGrid[randomCell.x][randomCell.y] == false){
-            gridW.unmarkSpot(randomCell.x + middleXOffset, randomCell.y + middleYOffset);
+            gridW.unmarkSpot(randomCell.x + middleXOffset, randomCell.y + middleYOffset, visitTimer);
         }
 
         if (randomCell.x - 2 >= 1 && gridW.getEntry(randomCell.x - 2, randomCell.y) == "Wall") {frontierCells.push(new node(randomCell.x - 2, randomCell.y, 2, randomCell));}
@@ -44,4 +46,5 @@ function generateMazePrim(gridW){
             gridW.visitedGrid[i][j] = false;
         }
     }
+    setTimeout(function(){gridW.animating = false;}, visitTimer)
 }

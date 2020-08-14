@@ -10,6 +10,7 @@ class gridWrapper{
         this.endMade = false;
         this.startSelected = false;
         this.endSelected = false;
+        this.animating = false;
         this.ran = false;
 
         this.grid = [];
@@ -29,50 +30,58 @@ class gridWrapper{
     markSpotAsWall(row,col){
         this.grid[row][col] = "Wall";
         fill('#4834d4');
-        square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
+        square(col*(height/this.numRows), row*(height/this.numRows), (height/this.numRows));
     }
     markSpotAsVisited(row,col, delay){
         this.visitedGrid[row][col] = true;
         if (this.grid[row][col] == "Open"){
             if (document.getElementById("toggle").checked == true){
                     setTimeout(fill, delay, '#ff0084');
-                    setTimeout(square, delay, col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
+                    setTimeout(square, delay, col*(height/this.numRows), row*(height/this.numRows), (height/this.numRows));
             }
             else {
                 fill('#ff0084');
-                square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
+                square(col*(height/this.numRows), row*(height/this.numRows), (height/this.numRows));
             }
         }
         
     }
     markSpotAsStart(row,col){
+        if (this.startMade){
+            this.unmarkSpot(this.startX, this.startY);
+        }
         this.grid[row][col] = "Start";
         this.startX = row;
         this.startY = col;
         fill('#00FF00');
-        square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
+        square(col*(height/this.numRows), row*(height/this.numRows), (height/this.numRows));
         this.startSelected = false;
         this.startMade = true;
     }
     markSpotAsEnd(row,col){
+        if (this.endMade){
+            this.unmarkSpot(this.endX, this.endY);
+        }
         this.grid[row][col] = "End";
         this.endX = row;
         this.endY = col;
         fill('#FF0000');
-        square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
+        square(col*(height/this.numRows), row*(height/this.numRows), (height/this.numRows));
         this.endSelected = false;
         this.endMade = true;
     }
     unmarkSpot(row,col, delay){
         this.grid[row][col] = "Open";
+        //stroke('black');
+        //strokeWeight(1);
         if (document.getElementById("toggle").checked == true){
-            //In this case, setTimeout seems to have enough complexity to delay the animation naturally
-            setTimeout(fill, 0, '#ecf0f1');
-            setTimeout(square, 0, col*(height/this.numRows), row*(height/this.numRows), height/this.numRows)
+            //In this case, setTimeout seems to have enough complexity to delay the maze animation naturally
+            setTimeout(fill, delay, '#ecf0f1');
+            setTimeout(square, delay, col*(height/this.numRows), row*(height/this.numRows), (height/this.numRows));
         }
         else{
-            fill('white');
-            square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
+            fill('#ecf0f1');
+            square(col*(height/this.numRows), row*(height/this.numRows), (height/this.numRows));
         }
     }
     getEntry(row,col){

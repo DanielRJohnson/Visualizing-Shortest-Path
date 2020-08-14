@@ -25,10 +25,12 @@
     <div id="tutorial" class="tutorial">
         <div class="tutorialContent">
             <span class="close">&times;</span>
-                <br><h3>Welcome to Visualizing Shortest Path!</h3><br>
+                <br><h3>Welcome to Visualizing Shortest Path!</h3>
                 <br><h5>This tool uses the P5.js library to visualize pathfinding algorithms. 
-                <br><br>To use this tool, simply "Place Start", "Place End", click on the grid to 
-                make obstacles or generate a maze, then click "Run Algorithm".
+                <br><br>To use this tool, simply "Place Start", "Place End", left click on the grid to 
+                make obstacles, right click to delete obstacles, then click "Run Algorithm".
+                You can also click "Generate Maze" to get a random maze and press the dropdown on 
+                "Run Algorithm" to change the algorithm!
                 <br><br>To learn more, click "Next".</h5>
                 <button type="button" class="btn btn-primary" id="Next" onclick="buttonPressed(this)" style="position: absolute; bottom: 5px; right: 5px;">Next: 1/5</button>
         </div>
@@ -36,7 +38,7 @@
 
     <div id="tutorial2" class="tutorial2">
         <div class="tutorialContent2">
-                <h3>About the algorithms!</h3><br>
+                <h3>About the algorithms!</h3>
                 <h5>A*(or AStar) is a pathfinding/searching algorithm that operates on a bias. A* knows where the end is and essentially
                     defaults its direction towards the end. If at any point it cannot progress further towards the end, it settles
                     for the next best option. Repeating this, A* finds a shortest path.
@@ -49,7 +51,7 @@
 
     <div id="tutorial3" class="tutorial3">
         <div class="tutorialContent3">
-                <h3>About the algorithms!</h3><br>
+                <h3>About the algorithms!</h3>
                 <h5>Breadth-First Search(or BFS) is a pathfinding/searching algorithm that is much more brute force than A*.
                     BFS does now know where the endpoint is, so it simply looks in every direction. As long as it hasn't
                     reached the end, the places that it looked previously look in every direction. Repeating this, BFS finds a shortest path. 
@@ -62,7 +64,7 @@
 
     <div id="tutorial4" class="tutorial4">
         <div class="tutorialContent4">
-                <h3>About the algorithms!</h3><br>
+                <h3>About the algorithms!</h3>
                 <h5>Prim's Algorithm is used to find a minimum spanning tree of a graph. If we give it some randomness, it can be used
                     to generate mazes. This randomized implementation starts from a spot, adds all of the walls to a list, then chooses
                     a random wall to delete if only one of the two sides of it have been visited. It then adds all of the new walls to the list.
@@ -76,7 +78,7 @@
 
     <div id="tutorial5" class="tutorial5">
         <div class="tutorialContent5">
-                <h3>About the algorithms!</h3><br>
+                <h3>About the algorithms!</h3>
                 <h5>These algorithms have much more detail to them than I can give them credit for in this short-form tutorial.
                     If you are interested, I would encourage you to look into them futher. It can get quite complex.<br><br>
                     If you want to check out the source code or contact me, the GitHub repo can be found here:<br>
@@ -131,7 +133,7 @@
         </div>
     </h1>
     
-    <div class="canvasContainer" id="canvasContainer"></div>
+    <div class="canvasContainer" id="canvasContainer" oncontextmenu="return false;"></div>
     <div id="snackbar">You weren't supposed to see this yet...</div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

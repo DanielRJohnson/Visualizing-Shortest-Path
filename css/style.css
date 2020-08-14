@@ -12,7 +12,7 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px 10%;
+    padding: 30px 5%;
     height: 5vh;
 }
 body{
@@ -28,7 +28,7 @@ h1{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.2em 10%;
+    padding: 0.2em 5%;
     padding-bottom: 0;
 }
 h3, h5{
@@ -38,7 +38,7 @@ h3, h5{
     position: relative;
     margin: 1em .5em;
     margin-top: 0em;
-    height: 88vh;
+    height: 86vh;
 }
 .btn{
     border-color: #4834d4;

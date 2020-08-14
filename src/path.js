@@ -27,15 +27,24 @@ function drawPath(path, gridW){
         }
         pathTimer++;
     }
-    if (document.getElementById("toggle").checked == true){
+    if (document.getElementById("toggle").checked == true && path.length > 1){
         setTimeout(line, delay, path[path.length - 2].y*squareSize + offset, path[path.length - 2].x*squareSize + offset, gridW.endY*squareSize + offset, gridW.endX*squareSize + offset);
+        setTimeout(strokeWeight, delay, 0.25);
+        //setTimeout(noStroke, delay);
+        setTimeout(function(){gridW.animating = false;}, delay)
+    }
+    else if (path.length > 1){
+        line(path[path.length - 2].y*squareSize + offset, path[path.length - 2].x*squareSize + offset, gridW.endY*squareSize + offset, gridW.endX*squareSize + offset);
+        strokeWeight(0.25);
+        //noStroke();
+        gridW.animating = false;
     }
     else{
-        line(path[path.length - 2].y*squareSize + offset, path[path.length - 2].x*squareSize + offset, gridW.endY*squareSize + offset, gridW.endX*squareSize + offset);
+        gridW.animating = false;
     }
-    //noStroke();
 }
 function recreatePath(p, gridW, visitTimer){
+    gridW.animating = true;
     let path = [];
     while (p.prev != p){
         path.unshift(p);
