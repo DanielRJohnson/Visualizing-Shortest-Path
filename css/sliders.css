@@ -1,0 +1,38 @@
+.animationSlider, .title, .diagSlider{
+    color: #afafbf;
+    background-color: #171c28;
+    user-select: none;
+    display: inline-block;
+}
+.switch, .switchDiag { 
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position : relative;
+    display : inline-block;
+    width : 40px;
+    height : 20px;
+    background-color: #afafbf;
+    border-radius: 20px;
+}
+.switch::after, .switchDiag::after{
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: white;
+    top: 1px;
+    left: 1px;
+    transition: all 0.3s;
+}
+.checkbox:checked + .switch::after, .checkboxDiag:checked + .switchDiag::after {
+    left : 20px; 
+}
+.checkbox:checked + .switch, .checkboxDiag:checked + .switchDiag {
+    background-color: #7CC5FF;
+}
+.checkbox, .checkboxDiag { 
+    display : none;
+}

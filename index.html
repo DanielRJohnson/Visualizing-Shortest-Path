@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="p5.js"></script>
-    <script src="index.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/sliders.css">
+    <link rel="stylesheet" href="css/snackbar.css">
+    <link rel="stylesheet" href="css/tutorial.css">
+    <link rel="stylesheet" href="css/button.css">
+    <script src="src/p5.js"></script>
+    <script src="src/gridWrapper.js"></script>
+    <script src="src/DataStructures/node.js"></script> <!--No, not that node.js-->
+    <script src="src/DataStructures/prioQueue.js"></script>
+    <script src="src/Algorithms/AStar.js"></script>
+    <script src="src/Algorithms/BFS.js"></script>
+    <script src="src/Algorithms/RandomPrim's.js"></script>
+    <script src="src/path.js"></script>
+    <script src="src/index.js"></script>
     <title>Visualizing Shortest Path</title>
 </head>
 
@@ -27,6 +38,10 @@
         <div class="animationSlider">
             Animations (Longer computation times): <input type="checkbox" id="toggle" class="checkbox" checked/>
             <label for="toggle" class="switch"></label>
+        </div>
+        <div class="diagSlider">
+            Allow Diagonals: <input type="checkbox" id="toggleDiag" class="checkboxDiag" checked/>
+            <label for="toggleDiag" class="switchDiag"></label>
         </div>
         <button onclick="window.location.href='https://github.com/DanielRJohnson';">My Github</button>
     </header>

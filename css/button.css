@@ -1,0 +1,18 @@
+button {
+    cursor: pointer;
+    display:inline;
+    margin:0;
+    font-family: 'Montserrat', sans-serif;
+    color: #171c28;
+    background-color: #afafbf;
+    padding:0.35em 1.2em;
+    border:0.1em solid #171c28;
+    box-sizing: border-box;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+button:hover{
+    color:#afafbf;
+    background-color:#171c28;
+    border:0.1em solid #afafbf;
+}

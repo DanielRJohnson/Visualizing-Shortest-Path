@@ -1,0 +1,32 @@
+.tutorial{
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.5);
+    overflow: auto;
+}
+.tutorialContent{
+    background-color: #afafbf;
+    margin: 15% auto;
+    border: 3px solid black;
+    width: 50%;
+    height: 50%;
+    text-align: center;
+    font-size: 24px;
+}
+.close{
+    padding-right: 0.3em;
+    color: gray;
+    float: right;
+    font-size: 50px;
+    font-weight: bold;
+}
+.close:hover, .close:focus{
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+}
