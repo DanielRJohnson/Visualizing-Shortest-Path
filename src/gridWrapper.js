@@ -66,8 +66,9 @@ class gridWrapper{
     unmarkSpot(row,col, delay){
         this.grid[row][col] = "Open";
         if (document.getElementById("toggle").checked == true){
-            setTimeout(fill, delay, '#171c28');
-            setTimeout(square, delay, col*(height/this.numRows), row*(height/this.numRows), height/this.numRows)
+            //In this case, setTimeout seems to have enough complexity to delay the animation naturally
+            setTimeout(fill, 0, '#171c28');
+            setTimeout(square, 0, col*(height/this.numRows), row*(height/this.numRows), height/this.numRows)
         }
         else{
             fill('#171c28');

@@ -1,4 +1,5 @@
 function BFS(gridW){
+    let startTime = performance.now();
     let source = new node(gridW.startX, gridW.startY, 0);
     let q = new prioQueue();
     q.enqueue(source, source.dist);
@@ -6,8 +7,9 @@ function BFS(gridW){
     while (!q.isEmpty()){
         let p = q.dequeue().element;
         if (gridW.getEntry(p.x, p.y) == "End"){
+            let endTime = performance.now();
             recreatePath(p, gridW, visitTimer);
-            return p.dist;
+            return {dist: p.dist, time: endTime-startTime};
         }
         let neighbors = p.getNeighbors(gridW);
         for (let i in neighbors){
@@ -19,5 +21,6 @@ function BFS(gridW){
         }
         visitTimer++;
     }
-    return -1;
+    let endTime = performance.now();
+    return {dist: -1, time: endTime-startTime};
 }

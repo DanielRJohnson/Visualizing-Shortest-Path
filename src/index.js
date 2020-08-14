@@ -17,10 +17,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     console.log("DOM fully loaded in " + (endTime - startTime).toFixed(2) + " ms");
 });
 
-/*
-* Global variable is ugly, I know. As of right now, I haven't thought up
-* a workaround because the P5 functions need access to the grid.
-*/
 var currentGrid = new gridWrapper(25);
 
 //P5 Functions
@@ -87,22 +83,22 @@ function buttonPressed(button){
     }
     else if (button.id == "RunAlgorithm"){
         if (currentGrid.startMade == true && currentGrid.endMade == true && currentGrid.ran == false){
-            let startTime = performance.now();
-            let dist;
+            //let startTime = performance.now();
+            let info;
             let alg = document.getElementById("ChangeAlgorithm");
             if (alg.innerHTML == "Change Algorithm: BFS"){
-                dist = BFS(currentGrid);
+                info = BFS(currentGrid);
             }
             else {
-                dist = AStar(currentGrid);
+                info = AStar(currentGrid);
             }
             let endTime = performance.now();
             var snackbar = document.getElementById("snackbar");
-            if (dist != -1){
-                snackbar.innerHTML = "This algorithm took " + (endTime - startTime).toFixed(2) + " ms to compute a distance of " + dist + " units";
+            if (info.dist != -1){
+                snackbar.innerHTML = "This algorithm took " + info.time.toFixed(2) + " ms to compute a distance of " + info.dist + " units";
             }
             else{
-                snackbar.innerHTML = "This algorithm took " + (endTime - startTime).toFixed(2) + " ms to realize that there is no solution";
+                snackbar.innerHTML = "This algorithm took " + info.time.toFixed(2) + " ms to realize that there is no solution";
             }
             currentGrid.ran = true;
             snackbar.className = "show";
