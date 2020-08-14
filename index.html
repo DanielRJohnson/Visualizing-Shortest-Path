@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/sliders.css">
     <link rel="stylesheet" href="css/snackbar.css">
     <link rel="stylesheet" href="css/tutorial.css">
-    <link rel="stylesheet" href="css/button.css">
     <script src="src/p5.js"></script>
     <script src="src/gridWrapper.js"></script>
     <script src="src/DataStructures/node.js"></script> <!--No, not that node.js-->
@@ -16,6 +16,7 @@
     <script src="src/Algorithms/BFS.js"></script>
     <script src="src/Algorithms/RandomPrim's.js"></script>
     <script src="src/path.js"></script>
+    <script src="src/buttons.js"></script>
     <script src="src/index.js"></script>
     <title>Visualizing Shortest Path</title>
 </head>
@@ -24,9 +25,65 @@
     <div id="tutorial" class="tutorial">
         <div class="tutorialContent">
             <span class="close">&times;</span>
-            <br><h3>Welcome to Visualizing Shortest Path!</h3><br>
-            <br><h5>This project uses the P5.js library to visualize pathfinding algorithms. 
-            <br><br>To use this tool, simply "Place Start", "Place End", click on the grid to make obstacles or generate a maze, then click "Run Algorithm".</h5>
+                <br><h3>Welcome to Visualizing Shortest Path!</h3><br>
+                <br><h5>This tool uses the P5.js library to visualize pathfinding algorithms. 
+                <br><br>To use this tool, simply "Place Start", "Place End", click on the grid to 
+                make obstacles or generate a maze, then click "Run Algorithm".
+                <br><br>To learn more, click "Next".</h5>
+                <button type="button" class="btn btn-primary" id="Next" onclick="buttonPressed(this)" style="position: absolute; bottom: 5px; right: 5px;">Next: 1/5</button>
+        </div>
+    </div>
+
+    <div id="tutorial2" class="tutorial2">
+        <div class="tutorialContent2">
+                <h3>About the algorithms!</h3><br>
+                <h5>A*(or AStar) is a pathfinding/searching algorithm that operates on a bias. A* knows where the end is and essentially
+                    defaults its direction towards the end. If at any point it cannot progress further towards the end, it settles
+                    for the next best option. Repeating this, A* finds a shortest path.
+                    More about A* here: <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">https://en.wikipedia.org/wiki/A*_search_algorithm</a>
+                </h5>
+                <img src="images/AStar.png" alt="AStar Example">
+                <button type="button" class="btn btn-primary" id="Next2" onclick="buttonPressed(this)" style="position: absolute; bottom: 5px; right: 5px;">Next: 2/5</button>
+        </div>
+    </div>
+
+    <div id="tutorial3" class="tutorial3">
+        <div class="tutorialContent3">
+                <h3>About the algorithms!</h3><br>
+                <h5>Breadth-First Search(or BFS) is a pathfinding/searching algorithm that is much more brute force than A*.
+                    BFS does now know where the endpoint is, so it simply looks in every direction. As long as it hasn't
+                    reached the end, the places that it looked previously look in every direction. Repeating this, BFS finds a shortest path. 
+                    More about BFS here: <a href="https://en.wikipedia.org/wiki/Breadth-first_search">https://en.wikipedia.org/wiki/Breadth-first_search</a>
+                </h5>
+                <img src="images/BFS.png" alt="BFS Example">
+                <button type="button" class="btn btn-primary" id="Next3" onclick="buttonPressed(this)" style="position: absolute; bottom: 5px; right: 5px;">Next: 3/5</button>
+        </div>
+    </div>
+
+    <div id="tutorial4" class="tutorial4">
+        <div class="tutorialContent4">
+                <h3>About the algorithms!</h3><br>
+                <h5>Prim's Algorithm is used to find a minimum spanning tree of a graph. If we give it some randomness, it can be used
+                    to generate mazes. This randomized implementation starts from a spot, adds all of the walls to a list, then chooses
+                    a random wall to delete if only one of the two sides of it have been visited. It then adds all of the new walls to the list.
+                    This repeats until the maze is complete. 
+                    More about Prim's Algorithm here: <a href="https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_Prim's_algorithm">https://en.wikipedia.org/wiki/Maze_generation_algorithm#Randomized_Prim's_algorithm</a>
+                </h5>
+                <img src="images/maze.png" alt="Prim's Example">
+                <button type="button" class="btn btn-primary" id="Next4" onclick="buttonPressed(this)" style="position: absolute; bottom: 5px; right: 5px;">Next: 4/5</button>
+        </div>
+    </div>
+
+    <div id="tutorial5" class="tutorial5">
+        <div class="tutorialContent5">
+                <h3>About the algorithms!</h3><br>
+                <h5>These algorithms have much more detail to them than I can give them credit for in this short-form tutorial.
+                    If you are interested, I would encourage you to look into them futher. It can get quite complex.<br><br>
+                    If you want to check out the source code or contact me, the GitHub repo can be found here:<br>
+                    <a href="https://github.com/DanielRJohnson/Pathfinding-Project">https://github.com/DanielRJohnson/Pathfinding-Project</a><br><br>
+                    <img src="images/GitHub-Mark-120px-plus.png" alt="GitHub Mark">
+                </h5>
+                <button type="button" class="btn btn-primary" id="Next5" onclick="buttonPressed(this)" style="position: absolute; bottom: 5px; right: 5px;">Finish: 5/5</button>
         </div>
     </div>
 
@@ -40,23 +97,44 @@
             <label for="toggle" class="switch"></label>
         </div>
         <div class="diagSlider">
-            Allow Diagonals: <input type="checkbox" id="toggleDiag" class="checkboxDiag" checked/>
+            Allow Diagonals: <input type="checkbox" id="toggleDiag" class="checkboxDiag"/>
             <label for="toggleDiag" class="switchDiag"></label>
         </div>
-        <button onclick="window.location.href='https://github.com/DanielRJohnson';">My Github</button>
+        <button class="btn btn-primary" onclick="window.location.href='https://github.com/DanielRJohnson';">My Github</button>
     </header>
     <h1>
-            <button type="button" class="PlaceStart" id="PlaceStart" onclick="buttonPressed(this)">Place Start</button>
-            <button type="button" class="PlaceEnd" id="PlaceEnd" onclick="buttonPressed(this)">Place End</button>
-            <button type="button" class="IncreaseRows" id="IncreaseRows" onclick="buttonPressed(this)">Increase rows</button>
-            <button type="button" class="ReduceRows" id="ReduceRows" onclick="buttonPressed(this)">Reduce rows</button>
-            <button type="button" class="GenerateMaze" id="GenerateMaze" onclick="buttonPressed(this)">Generate Maze</button>
-            <button type="button" class="ChangeAlgorithm" id="ChangeAlgorithm" onclick="buttonPressed(this)">Change Algorithm: A*</button>
-            <button type="button" class="Reset" id="Reset" onclick="buttonPressed(this)">Reset</button>
-            <button type="button" class="RunAlgorithm" id="RunAlgorithm" onclick="buttonPressed(this)">Run Algorithm</button>
+        <div class="btn-group" role="group" aria-label="Start/End">
+            <button type="button" class="btn btn-primary" id="PlaceStart" onclick="buttonPressed(this)">Place Start</button>
+            <button type="button" class="btn btn-primary" id="PlaceEnd" onclick="buttonPressed(this)">Place End</button>
+        </div>
+        <div class="btn-group" role="group" aria-label="Increase/Reduce">
+            <button type="button" class="btn btn-primary" id="IncreaseRows" onclick="buttonPressed(this)">Increase rows</button>
+            <button type="button" class="btn btn-primary" id="ReduceRows" onclick="buttonPressed(this)">Reduce rows</button>
+        </div>
+
+            <button type="button" class="btn btn-primary" id="GenerateMaze" onclick="buttonPressed(this)">Generate Maze</button>
+            <button type="button" class="btn btn-primary" id="Reset" onclick="buttonPressed(this)">Reset</button>
+                
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" id="RunAlgorithm" onclick="buttonPressed(this)" style="min-width: 22em;">Run Algorithm: A*</button>
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" id="dropdownToggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#" id="A*" onclick="buttonPressed(this)">A*</a>
+                <a class="dropdown-item" href="#" id="BFS" onclick="buttonPressed(this)">Breadth-First Search</a>
+            </div>
+
+
+        </div>
     </h1>
     
     <div class="canvasContainer" id="canvasContainer"></div>
-    <div id="snackbar">You weren't supposed to see this...</div>
+    <div id="snackbar">You weren't supposed to see this yet...</div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>
 </html>

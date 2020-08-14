@@ -28,18 +28,18 @@ class gridWrapper{
     }
     markSpotAsWall(row,col){
         this.grid[row][col] = "Wall";
-        fill('#1B6BDB');
+        fill('#4834d4');
         square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
     }
     markSpotAsVisited(row,col, delay){
         this.visitedGrid[row][col] = true;
         if (this.grid[row][col] == "Open"){
             if (document.getElementById("toggle").checked == true){
-                    setTimeout(fill, delay, '#7CC5FF');
+                    setTimeout(fill, delay, '#ff0084');
                     setTimeout(square, delay, col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
             }
             else {
-                fill('#7CC5FF');
+                fill('#ff0084');
                 square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
             }
         }
@@ -49,7 +49,7 @@ class gridWrapper{
         this.grid[row][col] = "Start";
         this.startX = row;
         this.startY = col;
-        fill('#00e640');
+        fill('#00FF00');
         square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
         this.startSelected = false;
         this.startMade = true;
@@ -58,7 +58,7 @@ class gridWrapper{
         this.grid[row][col] = "End";
         this.endX = row;
         this.endY = col;
-        fill('#d91e18');
+        fill('#FF0000');
         square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
         this.endSelected = false;
         this.endMade = true;
@@ -67,11 +67,11 @@ class gridWrapper{
         this.grid[row][col] = "Open";
         if (document.getElementById("toggle").checked == true){
             //In this case, setTimeout seems to have enough complexity to delay the animation naturally
-            setTimeout(fill, 0, '#171c28');
+            setTimeout(fill, 0, '#ecf0f1');
             setTimeout(square, 0, col*(height/this.numRows), row*(height/this.numRows), height/this.numRows)
         }
         else{
-            fill('#171c28');
+            fill('white');
             square(col*(height/this.numRows), row*(height/this.numRows), height/this.numRows);
         }
     }

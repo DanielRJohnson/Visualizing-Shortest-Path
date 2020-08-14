@@ -1,6 +1,4 @@
 .animationSlider, .title, .diagSlider{
-    color: #afafbf;
-    background-color: #171c28;
     user-select: none;
     display: inline-block;
 }
@@ -31,7 +29,7 @@
     left : 20px; 
 }
 .checkbox:checked + .switch, .checkboxDiag:checked + .switchDiag {
-    background-color: #7CC5FF;
+    background-color: #686de0;
 }
 .checkbox, .checkboxDiag { 
     display : none;
