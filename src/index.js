@@ -121,4 +121,6 @@ function resetCanvas(rows){
     resizeCanvas(document.getElementById('canvasContainer').offsetWidth, document.getElementById('canvasContainer').offsetHeight);
     background('#ecf0f1');
     drawGrid();
+    document.getElementById("PlaceStart").innerHTML = "Place Start";
+    document.getElementById("PlaceEnd").innerHTML = "Place End";
 }

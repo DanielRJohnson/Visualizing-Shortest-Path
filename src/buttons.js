@@ -69,11 +69,13 @@ function buttonPressed(button){
     else if (button.id == "PlaceStart"){
         cursor('images/start.png', 10, 10);
         currentGrid.startSelected = true;
+        button.innerHTML = "Move Start";
 
     }
     else if (button.id == "PlaceEnd"){
         cursor('images/end.png', 10, 10);
         currentGrid.endSelected = true;
+        button.innerHTML = "Move End";
     }
     else if (button.id == "GenerateMaze"){
         if (!currentGrid.animating){
