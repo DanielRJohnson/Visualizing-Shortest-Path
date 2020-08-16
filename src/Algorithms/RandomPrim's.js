@@ -9,7 +9,6 @@ function addNeighborsOfType(gridW, arr, cell, type){
     if (cell.x + 2 < gridW.numRows - 1 && gridW.getEntry(cell.x + 2, cell.y) == type) {arr.push(new node(cell.x + 2, cell.y, 2, cell));}
     if (cell.y - 2 >= 1 && gridW.getEntry(cell.x, cell.y - 2) == type) {arr.push(new node(cell.x, cell.y - 2, 2, cell));}
     if (cell.y + 2 < gridW.numCols - 1 && gridW.getEntry(cell.x, cell.y + 2) == type) {arr.push(new node(cell.x, cell.y + 2, 2, cell));}
-
 }
 function generateMazePrim(gridW){
     currentGrid.animating = true;

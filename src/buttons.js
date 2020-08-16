@@ -87,24 +87,28 @@ function buttonPressed(button){
         document.getElementById("RunAlgorithm").innerHTML = "Run Algorithm: A*";
         //this is to avoid clicks on the dropdown affecting the canvas
         let effectiveX = floor(mouseX/(height/currentGrid.numRows));
-        let effectiveY = floor(mouseY/(height/currentGrid.numRows))
-        if (currentGrid.getEntry(effectiveY, effectiveX) == "Wall"){
+        let effectiveY = floor(mouseY/(height/currentGrid.numRows));
+        if (!currentGrid.animating){
+            if (currentGrid.getEntry(effectiveY, effectiveX) == "Wall"){
             currentGrid.unmarkSpot(effectiveY, effectiveX);
-        }
-        else{
-            currentGrid.markSpotAsWall(effectiveY, effectiveX);
+            }
+            else{
+                currentGrid.markSpotAsWall(effectiveY, effectiveX);
+            }
         }
     }
     else if (button.id == "BFS"){
         document.getElementById("RunAlgorithm").innerHTML = "Run Algorithm: Breadth-First Search";
         //this is to avoid clicks on the dropdown affecting the canvas
         let effectiveX = floor(mouseX/(height/currentGrid.numRows));
-        let effectiveY = floor(mouseY/(height/currentGrid.numRows))
-        if (currentGrid.getEntry(effectiveY, effectiveX) == "Wall"){
-            currentGrid.unmarkSpot(effectiveY, effectiveX);
-        }
-        else{
-            currentGrid.markSpotAsWall(effectiveY, effectiveX);
+        let effectiveY = floor(mouseY/(height/currentGrid.numRows));
+        if (!currentGrid.animating){
+            if (currentGrid.getEntry(effectiveY, effectiveX) == "Wall"){
+                currentGrid.unmarkSpot(effectiveY, effectiveX);
+            }
+            else{
+                currentGrid.markSpotAsWall(effectiveY, effectiveX);
+            }
         }
     }
     else if (button.id == "Next"){
